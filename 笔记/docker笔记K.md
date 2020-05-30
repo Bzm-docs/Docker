@@ -2,6 +2,14 @@
 
 #### Docker简介
 
+==容器就是将软件打包成标准化单元，以用于开发、交付和部署。==
+
+- **标准：**Docker为集装箱创建了行业标准，这样它们就可以在任何地方便携。
+- **轻量级：**容器共享机器的OS系统内核，因此不需要每个应用程序都有操作系统，从而提高了服务器效率，降低了服务器和许可成本
+- **安全：**应用程序在容器中更安全，Docker提供了业界最强的默认隔离功能。
+
+![image-20200530113144215](docker笔记K.assets/image-20200530113144215.png)
+
 #### Docker安装
 
 #### Docker基本命令
@@ -285,9 +293,15 @@ docker cp Bzm 23a9d8410416:/tmp/aa
 # 注意：若文件存在，则替换其中内容
 ```
 
+---
+
 
 
 #### Docker [数据卷](https://www.jianshu.com/p/19f12c616d0c)
+
+##### 联合文件系统
+
+`Docker镜像`是有多层`只读文件`叠加而成，当运行起一个容器的时候，Docker会在制只读层上创建一个`读写层`。如果运行中的容器需要修改文件，那么并不会修改只读层的文件，只会把该文件复制到`读写层`然后进行修改，只读层的文件就被隐藏了。当删除了该容器之后，或者重启容器之后，之前对文件的更改会丢失，镜像的只读层以及容器运行是的“读写层”被称为`联合文件系统（Union File System）`
 
 
 
@@ -301,12 +315,58 @@ docker cp Bzm 23a9d8410416:/tmp/aa
 
  
 
+![image-20200530120552934](docker笔记K.assets/image-20200530120552934.png)
 
 
-##### 数据卷使用
 
-```she
-docker run -it -v /media/docker-V/t1:/home centos /bin/bash
+##### 创建和管理卷
+
+```shell
+# 创建卷
+$ docker volume create my-vol
+
+
+# 列表卷
+$ docker volume ls
+
+local               my-vol
+
+# 显示详细信息
+
+$ docker volume inspect my-vol
+[
+    {
+        "CreatedAt": "2020-05-30T12:39:54+08:00",
+        "Driver": "local",
+        "Labels": {},
+        "Mountpoint": "/var/lib/docker/volumes/my-vol/_data",
+        "Name": "my-vol",
+        "Options": {},
+        "Scope": "local"
+    }
+]
+
+# 移除卷
+$ docker volume rm my-vol
+my-vol
+```
+
+
+
+#####  数据卷使用
+
+```shell
+# --mount
+$ docker run -d \
+  --name nginx01 \
+  --mount source=myvol2,target=/app \
+  nginx:latest
+
+# -v 
+$ docker run -d \
+  --name nginx01 \
+  -v myvol2:/app \
+  nginx:latest
 ```
 
 
