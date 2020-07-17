@@ -12,10 +12,10 @@
 
 ```shell
 # 拉取镜像
-docker pull mysql:5.7
+$ docker pull mysql:5.7
 
 # 运行mysql
-sudo docker run -d -p 3306:3306 --restart always --name mysql01 -e MYSQL_ROOT_PASSWORD=123456 -d -v /media/docker-V/mysql/data:/var/lib/mysql  mysql:5.7 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+$ sudo docker run -d -p 3306:3306 --restart always --name mysql01 -e MYSQL_ROOT_PASSWORD=123456 -d -v /media/docker-V/mysql/data:/var/lib/mysql  mysql:5.7 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 
 
 # 进入docker本地连接mysql客户端
@@ -45,5 +45,12 @@ docker run -d --name elasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=
 
 ```shell
 docker run -d -p 9000:9000 --restart=always -v /var/run/docker.sock:/var/run/docker.sock --name prtainer  portainer/portainer
+```
+
+###### RabbitMQ
+
+```shell
+$ docker run --name rabbitmq -d -p 15672:15672 -p 5672:5672 rabbitmq:3.7.7-management
+# 访问管理界面的地址就是 http://[宿主机IP]:15672
 ```
 

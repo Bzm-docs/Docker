@@ -748,6 +748,64 @@ docker network inspect docker01
 
 #### 实战
 
+##### SpringBoot微服务打包Docker镜像
+
+1、编写一个简单的`hello`程序
+
+```java
+@Controller
+public class HelloController {
+
+    @ResponseBody
+    @RequestMapping("/hello")
+    public String hello() {
+        return "hello Bzm!";
+    }
+}
+```
+
+![image-20200717101541076](docker笔记K.assets/image-20200717101541076.png)
+
+ 2、使用`maven`进行`package`打包
+
+[hello-0.0.1-SNAPSHOT.jar](../资料/hello-0.0.1-SNAPSHOT.jar)
+
+![image-20200717152918495](docker笔记K.assets/image-20200717152918495.png)
+
+3、编写Dockerfile文件，并和它和jar包上传到Linux服务器
+
+```dockerfile
+FROM java:8
+COPY *.jar /app.jar
+CMD ["--server.port=8080"]
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","/app.jar"]
+```
+
+![image-20200717153110886](docker笔记K.assets/image-20200717153110886.png)
+
+4、build构建镜像hello
+
+```shell
+$ docker build -t hello .
+```
+
+![image-20200717154213579](docker笔记K.assets/image-20200717154213579.png)
+
+5、运行测试
+
+```shell
+$ docker run -d -p 8080:8080 --name hello hello
+```
+
+![image-20200717154313560](docker笔记K.assets/image-20200717154313560.png)
+
+
+
+
+
+
+
 ##### Redis集群
 
 
