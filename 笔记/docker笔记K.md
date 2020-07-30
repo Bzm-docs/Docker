@@ -818,7 +818,251 @@ $ docker run -d -p 8080:8080 --name hello hello
 
 #### Docker Compose
 
+##### 1、简介
+
+[Docker Compose官方文档](https://docs.docker.com/compose/)
+
+Compose is a tool for defining and running multi-container Docker applications. With Compose, you use a YAML file to configure your application’s services. Then, with a single command, you create and start all the services from your configuration. To learn more about all the features of Compose, see [the list of features](https://docs.docker.com/compose/#features).
+
+>   -   `Compose`是一个用于定义和运行多容器`Docker`应用程序的工具。
+>   -   使用`YAML`文件来配置应用程序的服务。
+>   -   使用**命令**，就可以从**配置**中**创建并启动**所有服务。
+
+Compose works in all environments: production, staging, development, testing, as well as CI workflows. You can learn more about each case in [Common Use Cases](https://docs.docker.com/compose/#common-use-cases).
+
+>   `Compose`可以在所有环境中工作:**生产、阶段、开发、测试，以及CI工作流**。
+
+使用`Compose`基本上有**三个步骤:**
+
+1.  Define your app’s environment with a `Dockerfile` so it can be reproduced anywhere.
+2.  Define the services that make up your app in `docker-compose.yml` so they can be run together in an isolated environment.
+3.  Run `docker-compose up` and Compose starts and runs your entire app.
+
+>   **`Compose `是 `Docker `容器进行编排的工具**
+
+---
+
+##### 2、安装
+
+```shell
+# 下载
+$ curl -L https://get.daocloud.io/docker/compose/releases/download/1.26.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+# 授权
+$ chmod +x /usr/local/bin/docker-compose
+```
+
+##### 3、快速开始
+
+[Docker Compose快速开始](https://docs.docker.com/compose/gettingstarted/)
+
+1、创建项目目录
+
+```shell
+$ mkdir composetest
+$ cd composetest
+```
+
+ 2、`app.py`
+
+```python
+import time
+
+import redis
+from flask import Flask
+
+app = Flask(__name__)
+cache = redis.Redis(host='redis', port=6379)
+
+
+def get_hit_count():
+    retries = 5
+    while True:
+        try:
+            return cache.incr('hits')
+        except redis.exceptions.ConnectionError as exc:
+            if retries == 0:
+                raise exc
+            retries -= 1
+            time.sleep(0.5)
+
+
+@app.route('/')
+def hello():
+    count = get_hit_count()
+    return 'Hello World! I have been seen {} times.\n'.format(count)
+```
+
+3、`requirements.txt`
+
+```markdown
+flask
+redis
+```
+
+4、`Dockerfile`
+
+```dockerfile
+FROM python:3.7-alpine
+WORKDIR /code
+ENV FLASK_APP app.py
+ENV FLASK_RUN_HOST 0.0.0.0
+RUN apk add --no-cache gcc musl-dev linux-headers
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+EXPOSE 5000
+COPY . .
+CMD ["flask", "run"]
+```
+
+5、`docker-compose.yml`
+
+```yaml
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+  redis:
+    image: "redis:alpine"
+```
+
+6、启动`docker-compose up`
+
+![image-20200729192558561](docker笔记K.assets/image-20200729192558561.png)
+
+![image-20200729192945210](docker笔记K.assets/image-20200729192945210.png)
+
+![image-20200729192602824](docker笔记K.assets/image-20200729192602824.png)
+
+>   运行成功
+
+
+
+##### 4、yaml规则
+
+[compose文件格式规则](https://docs.docker.com/compose/compose-file/)
+
+```yaml
+# 三层
+version: ''		#版本
+services:		#服务
+	服务1:
+		服务配置...
+	服务2:
+		服务配置...
+# 其他配置
+volumes :
+networks :
+configs :
+```
+
+##### 5、开源项目wordpress
+
+[wordpress](https://docs.docker.com/compose/wordpress/)
+
+1、创建项目目录
+
+```shell
+$ mkdir my_wordpress
+$ cd my_wordpress/
+```
+
+2、`docker-compose.yml`
+
+```yaml
+version: '3.3'
+
+services:
+   db:
+     image: mysql:5.7
+     volumes:
+       - db_data:/var/lib/mysql
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: somewordpress
+       MYSQL_DATABASE: wordpress
+       MYSQL_USER: wordpress
+       MYSQL_PASSWORD: wordpress
+
+   wordpress:
+     depends_on:
+       - db
+     image: wordpress:latest
+     ports:
+       - "8000:80"
+     restart: always
+     environment:
+       WORDPRESS_DB_HOST: db:3306
+       WORDPRESS_DB_USER: wordpress
+       WORDPRESS_DB_PASSWORD: wordpress
+       WORDPRESS_DB_NAME: wordpress
+volumes:
+    db_data: {}
+```
+
+3、`docker-compose up`启动测试
+
+
+
+##### 6、自己编写微服务上线
+
+编写微服务代码
+
+![image-20200730165956186](docker笔记K.assets/image-20200730165956186.png)
+
+打`jar`包
+
+![image-20200730170101914](docker笔记K.assets/image-20200730170101914.png)
+
+`Dockerfile`
+
+```dockerfile
+FROM java:8
+
+COPY *.jar /app.jar
+
+CMD ["--server.port=8080"]
+
+EXPOSE 8080
+
+ENTRYPOINT ["java","-jar","/app.jar"]
+```
+
+`docker-compose.yml`
+
+```yaml
+version: '3.8'
+services:
+  app:
+    build:
+      dockerfile: Dockerfile
+    image: app
+    depends_on:
+      - redis
+    ports:
+      - 8080:8080
+  redis:
+    image: "redis:alpine"
+```
+
+上传到服务器
+
+![image-20200730170301104](docker笔记K.assets/image-20200730170301104.png)
+
+` docker-compose up`运行构建
+
+>   测试
+
+![image-20200730113950316](docker笔记K.assets/image-20200730113950316.png)
+
+
+
 #### Docker Swarm
+
+https://docs.docker.com/engine/swarm/
+
+
 
 #### CI/CD之Jenkins
 

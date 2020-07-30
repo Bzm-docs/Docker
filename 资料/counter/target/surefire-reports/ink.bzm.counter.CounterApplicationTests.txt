@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: ink.bzm.counter.CounterApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.733 s - in ink.bzm.counter.CounterApplicationTests
