@@ -54,3 +54,17 @@ $ docker run --name rabbitmq -d -p 15672:15672 -p 5672:5672 rabbitmq:3.7.7-manag
 # 访问管理界面的地址就是 http://[宿主机IP]:15672
 ```
 
+###### Zookeeper
+
+```shell
+$ docker run -d -p 2181:2181 --name some-zookeeper --restart always zookeeper:3.4.9
+```
+
+###### Consul
+
+```shell
+$ docker run -d -p 8500:8500 -v /data/consul:/consul/data -e CONSUL_BIND_INTERFACE='eth0' --name=consul_server_1 consul:1.6.1 agent -server -bootstrap -ui -node=1 -client='0.0.0.0' 
+
+$ docker run -d -p 8500:8500 -v /data/consul:/consul/data --name=dev-consul -e CONSUL_BIND_INTERFACE=eth0 --restart always consul:1.6.1
+```
+

@@ -1060,7 +1060,27 @@ services:
 
 #### Docker Swarm
 
-https://docs.docker.com/engine/swarm/
+##### 简介
+
+`Docker Swarm` 是 `Docker` 的集群管理工具。它将 `Docker `主机池转变为单个虚拟 `Docker `主机。` Docker Swarm `提供了标准的` Docker API`，所有任何已经与 `Docker `守护程序通信的工具都可以使用 `Swarm `轻松地扩展到多个主机。
+
+[swarm官方文档](https://docs.docker.com/engine/swarm/)
+
+##### 相关概念
+
+节点有两种类型: [**managers**](https://docs.docker.com/engine/swarm/how-swarm-mode-works/nodes/#manager-nodes) 和[**workers**](https://docs.docker.com/engine/swarm/how-swarm-mode-works/nodes/#worker-nodes).
+
+![Swarm mode cluster](https://docs.docker.com/engine/swarm/images/swarm-diagram.png)
+
+>   If you haven’t already, read through the [swarm mode overview](https://docs.docker.com/engine/swarm/) and [key concepts](https://docs.docker.com/engine/swarm/key-concepts/).
+
+##### 搭建集群
+
+
+
+##### Raft协议
+
+
 
 
 
