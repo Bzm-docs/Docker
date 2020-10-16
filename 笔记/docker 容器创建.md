@@ -50,7 +50,7 @@ docker run -d -p 9000:9000 --restart=always -v /var/run/docker.sock:/var/run/doc
 ###### RabbitMQ
 
 ```shell
-$ docker run --name rabbitmq -d -p 15672:15672 -p 5672:5672 rabbitmq:3.7.7-management
+$ docker run --name rabbitmq -d -p 15672:15672 -p 5672:5672 --restart always rabbitmq:3.7.7-management
 # 访问管理界面的地址就是 http://[宿主机IP]:15672
 ```
 

@@ -1,6 +1,8 @@
 ### Docker笔记
 
-#### Docker简介
+#### 1、 Docker简介
+
+`Docker `是一个开源的应用容器引擎，基于 `Go `语言   并遵从`Apache2.0`协议开源。`Docker `可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 `Linux `机器上，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口,更重要的是容器性能开销极低。
 
 ==容器就是将软件打包成标准化单元，以用于开发、交付和部署。==
 
@@ -10,9 +12,11 @@
 
 ![image-20200530113144215](docker笔记K.assets/image-20200530113144215.png)
 
-#### Docker安装
+#### 2、Docker安装
 
-#### Docker基本命令
+[Docker安装详解](https://www.baidu.com/)
+
+#### 3、Docker基本命令
 
 ```shell 
 # 显示docker的版本信息
@@ -27,7 +31,7 @@ docker 命令 --help
 
 > #### [Docker command line文档](https://docs.docker.com/engine/reference/commandline/cli/)
 
-##### 镜像命令
+##### 3.1、镜像命令
 
 ###### docker images
 
@@ -39,8 +43,6 @@ docker images [OPTIONS] [REPOSITORY[:TAG]]
 
 - **-a :**列出本地所有的镜像（含中间映像层，默认情况下，过滤掉中间映像层）
 - **-q :**只显示镜像ID
-
-
 
 ```shell
 [root@izqj7de25av7oxz ~]# docker images
@@ -104,7 +106,7 @@ Deleted: sha256:ecbe43fbdb4faf2f576ef25feaed19e949912e4ffc3b2a1f5dee9a3fd52128c4
 docker rmi -f $(docker images -aq)	
 ```
 
-##### 容器命令
+##### 3.2、容器命令
 
 ###### docker run
 
@@ -297,7 +299,9 @@ docker cp Bzm 23a9d8410416:/tmp/aa
 
 
 
-#### Docker [数据卷](https://www.jianshu.com/p/19f12c616d0c)
+#### 4、Docker 数据卷
+
+ [数据卷](https://www.jianshu.com/p/19f12c616d0c)
 
 ##### 联合文件系统
 
@@ -403,11 +407,11 @@ docker run -it --volumes-from centos01 --name centos03 centos
 
 
 
-#### Docker 镜像原理
+#### 5、Docker 镜像原理
 
 [Docker 镜像原理](https://www.cnblogs.com/asxf/p/11102949.html)
 
-#### Docker镜像制作
+#### 6、Docker镜像制作
 
 ###### docker diff
 
@@ -851,6 +855,10 @@ $ curl -L https://get.daocloud.io/docker/compose/releases/download/1.26.2/docker
 $ chmod +x /usr/local/bin/docker-compose
 ```
 
+>   使用`docker-compose version`命令，显示Compose的版本号，检查是否安装成功。
+
+![image-20200914172328171](docker笔记K.assets/image-20200914172328171.png)
+
 ##### 3、快速开始
 
 [Docker Compose快速开始](https://docs.docker.com/compose/gettingstarted/)
@@ -891,6 +899,8 @@ def hello():
     count = get_hit_count()
     return 'Hello World! I have been seen {} times.\n'.format(count)
 ```
+
+>   在这个例子中，`redis`是应用程序网络上的redis容器的主机名。我们使用Redis的默认端口`6379`。
 
 3、`requirements.txt`
 
