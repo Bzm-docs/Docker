@@ -68,3 +68,9 @@ $ docker run -d -p 8500:8500 -v /data/consul:/consul/data -e CONSUL_BIND_INTERFA
 $ docker run -d -p 8500:8500 -v /data/consul:/consul/data --name=dev-consul -e CONSUL_BIND_INTERFACE=eth0 --restart always consul:1.6.1
 ```
 
+###### gitlab
+
+```shell
+docker run -d --hostname gitlab.example.com -p 8443:443 -p 8080:80 -p 2222:22 --name gitlab --restart always -v /home/docker/gitlab/config:/etc/gitlab -v /home/docker/gitlab/logs:/var/log/gitlab -v /home/docker/gitlab/data:/var/opt/gitlab gitlab/gitlab-ce:latest          
+```
+

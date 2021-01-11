@@ -106,6 +106,36 @@ Deleted: sha256:ecbe43fbdb4faf2f576ef25feaed19e949912e4ffc3b2a1f5dee9a3fd52128c4
 docker rmi -f $(docker images -aq)	
 ```
 
+###### docker save
+
+docker save——保存一个本地镜像到tar归档文件
+
+```shell
+docker save [OPTIONS] IMAGE [IMAGE...]
+```
+
+```shell
+[root@k8s-master01 ~]# docker save -o nginx-ingress.tar f351ba0d5604
+[root@k8s-master01 ~]# ll -h
+total 313M
+-rw-r--r-- 1 root root 6.5K Nov  4 01:53 mandatory.yaml
+-rw------- 1 root root 313M Nov  4 02:02 nginx-ingress.tar
+```
+
+###### docker load
+
+`docker load`——导入镜像，从tar归档文件或STDIN
+
+```shell
+docker load [OPTIONS]
+```
+
+```shell
+[root@k8s-master01 ~]# docker load -i nginx-ingress-0.30.0.tar 
+```
+
+
+
 ##### 3.2、容器命令
 
 ###### docker run
@@ -184,7 +214,7 @@ docker rm [OPTIONS] CONTAINER [CONTAINER...]
 ```shell
 # 删除停止运行的容器
 docker ps -a | grep "Exited" | awk '{print $1 }'|xargs docker rm
-docker rm $(sudo docker ps -qf status=exited)
+docker rm -f $(sudo docker ps -qf status=exited)
 ```
 
 ###### docker start
